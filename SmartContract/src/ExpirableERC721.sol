@@ -14,11 +14,14 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
     error AlreadyLent();
     error InvalidExpiry();
     error NotExpiredYet();
+    error NotLoaned();
+    error OwnerZero();
 
     Counters.Counter private _tokenIds;
 
     mapping(uint256 => bool) claimed;
     mapping(uint256 => uint256) expiry;
+    mapping(uint256 => bool) currentLoan;
     mapping(uint256 => address) lender;
     bytes16 groupID;
     bool useSismo;
@@ -72,7 +75,7 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
     }
 
     function lend(address recipient, uint256 tokenId, uint256 _expiry) public {
-        if (expiry[tokenId] <= 0) {
+        if (currentLoan[tokenId] == true) {
             revert AlreadyLent();
         }
 
@@ -83,6 +86,7 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
         transferFrom(msg.sender, recipient, tokenId);
         expiry[tokenId] = _expiry;
         lender[tokenId] = msg.sender;
+        currentLoan[tokenId] = true;
     }
 
     function reclaim(uint256 tokenId) public {
@@ -90,8 +94,17 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
             revert NotExpiredYet();
         }
 
+        if (currentLoan[tokenId] == false) {
+            revert NotLoaned();
+        }
+
+        if (lender[tokenId] == address(0)) {
+            revert OwnerZero();
+        }
+
         _transfer(ownerOf(tokenId), lender[tokenId], tokenId);
         expiry[tokenId] = 0;
         lender[tokenId] = address(0);
+        currentLoan[tokenId] = false;
     }
 }
