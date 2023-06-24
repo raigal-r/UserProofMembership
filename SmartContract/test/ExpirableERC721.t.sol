@@ -29,7 +29,7 @@ contract ExpirableERC721Test is Test {
 
 
     function setUp() public {
-          vm.prank(alice);
+        vm.prank(alice);
         nft = new ExpirableERC721("ExpirableERC721","EXP",groupId,useSismo);
        
         
@@ -39,7 +39,6 @@ contract ExpirableERC721Test is Test {
        bob = users[1];
 
          nftId= nft.mint(alice,"blank");
-        // console.log("nftID: ", nftId );
 
     }
     function testLendAndReclaim() public {
