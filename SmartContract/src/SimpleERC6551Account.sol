@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
- import "openzeppelin/utils/introspection/IERC165.sol";
+import "openzeppelin/utils/introspection/IERC165.sol";
 import "openzeppelin/token/ERC721/IERC721.sol";
 import "openzeppelin/interfaces/IERC1271.sol";
 import "openzeppelin/utils/cryptography/SignatureChecker.sol";
@@ -10,14 +10,15 @@ import "./interfaces/IERC6551Account.sol";
 import "./lib/ERC6551AccountLib.sol";
 
 
-//simple implementation of ERC-6551 from:
+//  simple implementation of ERC-6551 from:
 //  https://github.com/erc6551/reference/blob/main/src/examples/simple/SimpleERC6551Account.sol
-//  unsure what funcitonality is not included compared to official reference implementation are.
+
 
 contract SimpleERC6551Account is IERC165, IERC1271, IERC6551Account {
     uint256 public nonce;
 
     receive() external payable {}
+
 
     function executeCall(
         address to,
