@@ -107,4 +107,14 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
         lender[tokenId] = address(0);
         currentLoan[tokenId] = false;
     }
+
+    function getOwnedTokenIds(address wallet) external view returns (uint256[] memory) {
+        uint256 balance = balanceOf(wallet);
+        uint256[] memory ids = new uint256[](balance);
+
+        for (uint256 i = 0; i < balance; i++) {
+            ids[i] = IERC721Enumerable(this).tokenOfOwnerByIndex(wallet, i);
+        }
+        return ids;
+    }
 }
