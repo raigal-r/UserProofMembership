@@ -11,6 +11,9 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
     using SismoConnectHelper for SismoConnectVerifiedResult;
 
     error AlreadyClaimed();
+    error AlreadyLent();
+    error InvalidExpiry();
+    error NotExpiredYet();
 
     Counters.Counter private _tokenIds;
 
@@ -18,15 +21,17 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
     mapping(uint256 => uint256) expiry;
     mapping(uint256 => address) lender;
     bytes16 groupID;
+    bool useSismo;
 
     bytes16 public constant APP_ID = 0x9820513d88bf47db265d70a430173414;
     bool public constant IS_IMPERSONATION_MODE = true;
 
-    constructor(string memory _symbol, string memory _ticker, bytes16 _groupID)
+    constructor(string memory _symbol, string memory _ticker, bytes16 _groupID, bool _useSismo)
         ERC721(_symbol, _ticker)
         SismoConnect(buildConfig(APP_ID, IS_IMPERSONATION_MODE))
     {
         groupID = _groupID;
+        useSismo = _useSismo;
     }
 
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
@@ -43,26 +48,37 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
     function mint(address recipient, bytes memory response) public returns (uint256) {
         uint256 newId = _tokenIds.current();
 
-        SismoConnectVerifiedResult memory result = verify({
-            responseBytes: response,
-            auth: buildAuth({authType: AuthType.VAULT}),
-            claim: buildClaim({groupId: groupID, value: 1, claimType: ClaimType.GTE}),
-            signature: buildSignature({message: abi.encode(msg.sender)})
-        });
+        if (useSismo) {
+            SismoConnectVerifiedResult memory result = verify({
+                responseBytes: response,
+                auth: buildAuth({authType: AuthType.VAULT}),
+                claim: buildClaim({groupId: groupID, value: 1, claimType: ClaimType.GTE}),
+                signature: buildSignature({message: abi.encode(msg.sender)})
+            });
+            uint256 vaultId = result.getUserId(AuthType.VAULT);
 
-        uint256 vaultId = result.getUserId(AuthType.VAULT);
+            if (claimed[vaultId] == true) {
+                revert AlreadyClaimed();
+            }
+
+            claimed[vaultId] = true;
+        }
 
         _mint(recipient, newId);
 
         _tokenIds.increment();
-        claimed[vaultId] = true;
 
         return newId;
     }
 
     function lend(address recipient, uint256 tokenId, uint256 _expiry) public {
-        require(expiry[tokenId] > 0, "cannot lend already loaned token");
-        require(_expiry > block.timestamp, "expiry time in the past");
+        if (expiry[tokenId] <= 0) {
+            revert AlreadyLent();
+        }
+
+        if (_expiry <= block.timestamp) {
+            revert InvalidExpiry();
+        }
 
         transferFrom(msg.sender, recipient, tokenId);
         expiry[tokenId] = _expiry;
@@ -70,7 +86,9 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
     }
 
     function reclaim(uint256 tokenId) public {
-        require(expiry[tokenId] <= block.timestamp, "expiry time not up yet");
+        if (expiry[tokenId] > block.timestamp) {
+            revert NotExpiredYet();
+        }
 
         _transfer(ownerOf(tokenId), lender[tokenId], tokenId);
         expiry[tokenId] = 0;
