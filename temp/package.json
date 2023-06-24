@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "ethers": "v5.7"
+  }
+}
