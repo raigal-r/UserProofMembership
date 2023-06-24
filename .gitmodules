@@ -1,3 +1,9 @@
 [submodule "SmartContract/lib/forge-std"]
 	path = SmartContract/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "SmartContract/lib/openzeppelin-contracts"]
+	path = SmartContract/lib/openzeppelin-contracts
+	url = https://github.com/Openzeppelin/openzeppelin-contracts
+[submodule "SmartContract/lib/sismo-connect-packages"]
+	path = SmartContract/lib/sismo-connect-packages
+	url = https://github.com/sismo-core/sismo-connect-packages
