@@ -16,7 +16,9 @@ import {
   InputLeftElement,
   Stack,
 } from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
+
+import { SismoConnectButton, AuthType, SismoConnectResponse } from "@sismo-core/sismo-connect-react";
+import { config } from "../config/sismo-connect-config";
 
 function App() {
   return (
@@ -31,7 +33,17 @@ function App() {
                 User Proof Membership
                 </Heading>
                 {/* <Logo /> */}
-                <img src="./assets/logo.png" alt="Image" />
+                <img src="../assets/logo.png" alt="Image" />
+
+                <SismoConnectButton
+                    config={config}
+                    // request proof of Github ownership
+                    auths={[{ authType: AuthType.GITHUB }]}
+                    onResponseBytes={(response: string) => {
+                        // call your contract with the response as bytes
+                    }}
+                />
+
                 <Text size={{ base: 'md', md: 'lg' }} fontWeight="semibold" color="white">
                   We build software that empowers organizations to effectively integrate their data, decisions, and operations.
                 </Text>
