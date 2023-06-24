@@ -17,7 +17,6 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
 
 function App() {
   return (
@@ -31,6 +30,8 @@ function App() {
                 <Heading size={{ base: 'xl', md: 'xl' }} fontWeight="bold" color="white">
                 User Proof Membership
                 </Heading>
+                {/* <Logo /> */}
+                <img src="./assets/logo.png" alt="Image" />
                 <Text size={{ base: 'md', md: 'lg' }} fontWeight="semibold" color="white">
                   We build software that empowers organizations to effectively integrate their data, decisions, and operations.
                 </Text>
