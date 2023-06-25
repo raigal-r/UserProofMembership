@@ -36,7 +36,7 @@ import {
   AuthType, // the authType enum, we will choose 'VAULT' in this tutorial
   ClaimType, // the claimType enum, we will choose 'GTE' in this tutorial, to check that the user has a value greater than a given threshold
 } from "@sismo-core/sismo-connect-react";
-import { transactions } from "../../../broadcast/ExpirableERC721.s.sol/5151111/run-latest.json";
+import { transactions } from "../../../broadcast/ExpirableERC721.s.sol/SismoCommunity/run-latest.json";
 
 import {
   ChakraProvider,
@@ -74,7 +74,8 @@ const sismoConnectConfig: SismoConnectConfig = {
     impersonate: [
       "0x6d8e3ef015c628Aa91a7fAC6a348bea80BcC0940", 
       "0x072d7e87c13bCe2751B5766A0E2280BAD235974f",
-      "0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f"
+      "0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f",
+      "0xBD730613339499c114d12Eb41dcE3321376b90e5"
     ],
   },
 };
