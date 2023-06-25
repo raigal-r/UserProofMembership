@@ -18,7 +18,8 @@ contract ExpirableERC721DeployScript is Script {
             vm.stopBroadcast();
             return erc721;
         }
-        erc721 = new ExpirableERC721(_symbol, _ticker, _groupID, _useSismo);
+
+        erc721 = new ExpirableERC721("ABC", "DEF", 0xd630aa769278cacde879c5c0fe5d203c, true);
         return erc721;
     }
 }
