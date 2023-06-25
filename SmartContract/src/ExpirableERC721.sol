@@ -26,7 +26,7 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
     bytes16 groupID;
     bool useSismo;
 
-    bytes16 public constant APP_ID = 0x9820513d88bf47db265d70a430173414;
+    bytes16 public constant APP_ID = 0xf16f189921c7684c3d6f5b471d5e1178;
     bool public constant IS_IMPERSONATION_MODE = true;
 
     constructor(string memory _symbol, string memory _ticker, bytes16 _groupID, bool _useSismo)
