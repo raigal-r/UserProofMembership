@@ -7,7 +7,7 @@ import "../src/ExpirableERC721.sol";
 contract ExpirableERC721DeployScript is Script {
     ExpirableERC721 erc721;
 
-    function run(string memory _symbol, string memory _ticker, bytes16 _groupID, bool _useSismo)
+    function run2(string memory _symbol, string memory _ticker, bytes16 _groupID, bool _useSismo)
         external
         returns (ExpirableERC721)
     {
@@ -19,7 +19,36 @@ contract ExpirableERC721DeployScript is Script {
             return erc721;
         }
 
-        erc721 = new ExpirableERC721("ABC", "DEF", 0xd630aa769278cacde879c5c0fe5d203c, true);
+        erc721 = new ExpirableERC721(
+            "ABC",
+            "DEF",
+            0xd630aa769278cacde879c5c0fe5d203c,
+            true
+        );
+        return erc721;
+    }
+
+    function run()
+        external
+        returns (
+            //run(string memory _symbol, string memory _ticker, bytes16 _groupID, bool _useSismo)
+            ExpirableERC721
+        )
+    {
+        // if (block.chainid == 5) {
+        //     uint256 deployerKey = vm.envUint("PRIVATE_KEY");
+        //     vm.startBroadcast(deployerKey);
+        //     erc721 = new ExpirableERC721(_symbol, _ticker, _groupID, _useSismo);
+        //     vm.stopBroadcast();
+        //     return erc721;
+        // }
+
+        erc721 = new ExpirableERC721(
+            "ABC",
+            "DEF",
+            0xd630aa769278cacde879c5c0fe5d203c,
+            true
+        );
         return erc721;
     }
 }

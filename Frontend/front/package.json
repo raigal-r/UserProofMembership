@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "NODE_OPTIONS='--max-http-header-size=24576' next start",
     "lint": "next lint",
-    "deploy-airdrop": "forge script DeployAirdrop --rpc-url http://localhost:8545 -vv --mnemonics 'test test test test test test test test test test test junk' --sender '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266' --broadcast &&  ./script/generate-abi-from-front.sh"
+    "deploy-airdrop": "forge script ../script/ExpirableERC721.s.sol --rpc-url http://localhost:8545 -vv --mnemonics 'test test test test test test test test test test test junk' --sender '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266' --broadcast"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.1.4",

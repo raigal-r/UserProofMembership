@@ -27,8 +27,8 @@ contract ExpirableERC721Test is BaseTest {
 
     function setUp() public {
         deployer = new ExpirableERC721DeployScript();
-        erc721 = deployer.run("A", "B", groupID, false);
-        sismoERC721 = deployer.run("C", "D", groupID, true);
+        erc721 = deployer.run2("A", "B", groupID, false);
+        sismoERC721 = deployer.run2("C", "D", groupID, true);
 
         utils = new Utilities();
         users = utils.createUsers(3);
