@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 import "forge-std/Script.sol";
 import "../src/ExpirableERC721.sol";
 
 contract ExpirableERC721DeployScript is Script {
     ExpirableERC721 erc721;
+
+    bytes16 public constant GROUP_ID = 0x349d8bd135bd903a633464f9b303c902;
 
     function run_test(
         string memory _symbol,
@@ -27,12 +29,7 @@ contract ExpirableERC721DeployScript is Script {
     function run() external returns (ExpirableERC721) {
         uint256 deployerKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(deployerKey);
-        erc721 = new ExpirableERC721(
-            "ABC",
-            "DEF",
-            0xd630aa769278cacde879c5c0fe5d203c,
-            true
-        );
+        erc721 = new ExpirableERC721("ABC", "DEF", GROUP_ID, true);
         vm.stopBroadcast();
         return erc721;
     }
