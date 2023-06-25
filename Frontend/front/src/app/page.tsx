@@ -44,7 +44,7 @@ import logo from "../assets/logo.png";
 
 /* ***********************  Sismo Connect Config *************************** */
 export const sismoConnectConfig: SismoConnectConfig = {
-  appId: "0xf16f189921c7684c3d6f5b471d5e1178",
+  appId: "0xf4977993e52606cfd67b7a1cde717069",
   vault: {
     // For development purposes insert the identifier that you want to impersonate any account here
     // Never use this in production
@@ -63,16 +63,21 @@ export const CLAIMS: ClaimRequest[] = [
     // Sismo Community Members
     groupId: "0xd630aa769278cacde879c5c0fe5d203c",
     isSelectableByUser: true,
+    isOptional: true,
   },
   {
     // Nouns DAO NFT
     groupId: "0xa4ff29395199edcc63221e5b9b5c202d",
     isSelectableByUser: true,
+    isOptional: true,
+
   },
   {
     // Proof-of-Humanity
     groupId: "0x349d8bd135bd903a633464f9b303c902",
     isSelectableByUser: true,
+    isOptional: true,
+
   },
 ];
 
