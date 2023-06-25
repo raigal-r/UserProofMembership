@@ -1,38 +1,99 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sismo Connect - Onchain Boilerplate Repository
 
-## Getting Started
+This repository aims at providing a simple example on how to integrate Sismo Connect onchain while allowing you to test the integration locally as easily as possible.
 
-First, run the development server:
+## Usage
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/download/) >= 18.15.0 (Latest LTS version)
+- [Yarn](https://classic.yarnpkg.com/en/docs/install)
+- [Foundry](https://book.getfoundry.sh/)
+
+### Clone the repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone https://github.com/sismo-core/sismo-connect-boilerplate-onchain
+cd sismo-connect-boilerplate-onchain
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Install contract dependencies
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+# updates foundry
+foundryup
+# install smart contract dependencies
+forge install
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Launch a local fork chain
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+# in another terminal
+# starts a local fork of Mumbai
+yarn anvil
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Launch the local application
 
-## Learn More
+You can now launch your local dapp with the commands:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# in another terminal
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# install frontend dependencies
+cd front
+yarn
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# launch local application
+yarn dev
+```
 
-## Deploy on Vercel
+The frontend is now available on http://localhost:3000/ and the contracts have been deployed on your local blockchain.
+You can now experiment the user flow by going to your local frontend http://localhost:3000/.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Deploy your Airdrop contract
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+With a private key, a RPC url and an etherscan api key:
+
+```bash
+forge script DeployAirdrop \
+--rpc-url $RPC_URL \
+--private-key "$PRIVATE_KEY" \
+--broadcast \
+--slow \
+--etherscan-api-key "$ETHERSCAN_API_KEY" \
+--verify \
+--watch
+```
+
+With a mnemonic and a sender:
+
+```bash
+forge script DeployAirdrop \
+--rpc-url $RPC_URL \
+--mnemonics "$MNEMONIC" \
+--sender $SENDER \
+--broadcast \
+--slow \
+--etherscan-api-key "$ETHERSCAN_API_KEY" \
+--verify \
+--watch
+```
+
+### Run contract tests
+
+Sismo Connect contracts are currently deployed on several chains.
+You can find the deployed addresses [here](https://docs.sismo.io/sismo-docs/knowledge-base/resources/sismo-101).
+You can then run tests on a local fork network to test your contracts.
+
+```bash
+## Run fork tests with goerli
+forge test --fork-url https://rpc.ankr.com/eth_goerli
+
+## Run fork tests with mumbai
+forge test --fork-url https://gateway.tenderly.co/public/polygon-mumbai
+
+# you can aslo use the rpc url you want by passing an environment variable
+forge test --fork-url $RPC_URL
+```
