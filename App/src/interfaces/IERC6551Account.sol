@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 interface IERC6551AccountProxy {
     function implementation() external view returns (address);
@@ -11,20 +11,9 @@ interface IERC6551Account {
 
     receive() external payable;
 
-    function executeCall(
-        address to,
-        uint256 value,
-        bytes calldata data
-    ) external payable returns (bytes memory);
+    function executeCall(address to, uint256 value, bytes calldata data) external payable returns (bytes memory);
 
-    function token()
-        external
-        view
-        returns (
-            uint256 chainId,
-            address tokenContract,
-            uint256 tokenId
-        );
+    function token() external view returns (uint256 chainId, address tokenContract, uint256 tokenId);
 
     function owner() external view returns (address);
 

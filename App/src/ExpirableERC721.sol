@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 import "openzeppelin/token/ERC721/ERC721.sol";
 import "openzeppelin/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -29,12 +29,7 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
     bytes16 public constant APP_ID = 0xf16f189921c7684c3d6f5b471d5e1178;
     bool public constant IS_IMPERSONATION_MODE = true;
 
-    constructor(
-        string memory _symbol,
-        string memory _ticker,
-        bytes16 _groupID,
-        bool _useSismo
-    )
+    constructor(string memory _symbol, string memory _ticker, bytes16 _groupID, bool _useSismo)
         ERC721(_symbol, _ticker)
         SismoConnect(buildConfig(APP_ID, IS_IMPERSONATION_MODE))
     {
@@ -42,36 +37,25 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
         useSismo = _useSismo;
     }
 
-    function supportsInterface(
-        bytes4 interfaceId
-    ) public view override(ERC721, ERC721Enumerable) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 firstTokenId,
-        uint256 batchSize
-    ) internal override(ERC721, ERC721Enumerable) {
+    function _beforeTokenTransfer(address from, address to, uint256 firstTokenId, uint256 batchSize)
+        internal
+        override(ERC721, ERC721Enumerable)
+    {
         super._beforeTokenTransfer(from, to, firstTokenId, batchSize);
     }
 
-    function mint(
-        address recipient,
-        bytes memory response
-    ) public returns (uint256) {
+    function mint(address recipient, bytes memory response) public returns (uint256) {
         uint256 newId = _tokenIds.current();
 
         if (useSismo) {
             SismoConnectVerifiedResult memory result = verify({
                 responseBytes: response,
                 auth: buildAuth({authType: AuthType.VAULT}),
-                claim: buildClaim({
-                    groupId: groupID,
-                    value: 1,
-                    claimType: ClaimType.GTE
-                }),
+                claim: buildClaim({groupId: groupID, value: 1, claimType: ClaimType.GTE}),
                 signature: buildSignature({message: abi.encode(msg.sender)})
             });
             uint256 vaultId = result.getUserId(AuthType.VAULT);
@@ -124,9 +108,7 @@ contract ExpirableERC721 is ERC721, ERC721Enumerable, SismoConnect {
         currentLoan[tokenId] = false;
     }
 
-    function getOwnedTokenIds(
-        address wallet
-    ) external view returns (uint256[] memory) {
+    function getOwnedTokenIds(address wallet) external view returns (uint256[] memory) {
         uint256 balance = balanceOf(wallet);
         uint256[] memory ids = new uint256[](balance);
 
