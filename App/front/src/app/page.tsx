@@ -182,11 +182,11 @@ export default function Home() {
 
                 <Image src={logo} alt="Sismo Connect" />
 
-                <Heading color="white">User Proof Membership</Heading>
-                <Text size={{ base: 'md', md: 'lg' }} fontWeight="semibold" color="white">
+                <Heading color="white" py={5}>User Proof Membership</Heading>
+                <Text py={2} size={{ base: 'md', md: 'lg' }} fontWeight="semibold" color="white">
                 We build software that empowers organizations to effectively integrate their data, decisions, and operations.
                 </Text>
-                <Text size={{ base: 'md', md: 'lg' }} fontWeight="semibold" color="white">
+                <Text py={2} size={{ base: 'md', md: 'lg' }} fontWeight="semibold" color="white">
                 Software that empowers organizations to effectively integrate their data, decisions, and operations.
                 </Text>
 
