@@ -5,5 +5,6 @@
 # the generated ABI will be used to call the contracts from the frontend
 mkdir -p ./../abi/
 touch ./../abi/Airdrop.json
+touch ./../abi/ExpirableERC721.json
 
-echo "{\n  \"abi\": $(forge inspect Airdrop abi)\n}" >| ./../abi/Airdrop.json
+echo "{\n  \"abi\": $(forge inspect ExpirableERC721 abi)\n}" >| ./../abi/ExpirableERC721.json

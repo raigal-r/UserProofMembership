@@ -27,6 +27,7 @@ import {
 import { waitForTransaction } from "@wagmi/core";
 import { decodeEventLog, formatEther } from "viem";
 import { abi as AirdropABI } from "../../../abi/Airdrop.json";
+import { abi as ExpirableERC721ABI } from "../../../abi/ExpirableERC721.json";
 import { errorsABI, formatError, fundMyAccountOnLocalFork, signMessage } from "@/utils/misc";
 import { mumbaiFork } from "@/utils/wagmi";
 import {
@@ -35,7 +36,7 @@ import {
   AuthType, // the authType enum, we will choose 'VAULT' in this tutorial
   ClaimType, // the claimType enum, we will choose 'GTE' in this tutorial, to check that the user has a value greater than a given threshold
 } from "@sismo-core/sismo-connect-react";
-import { transactions } from "../../../broadcast/Airdrop.s.sol/5151111/run-latest.json";
+import { transactions } from "../../../broadcast/ExpirableERC721.s.sol/5151111/run-latest.json";
 
 /* ***********************  Sismo Connect Config *************************** */
 
@@ -43,12 +44,16 @@ import { transactions } from "../../../broadcast/Airdrop.s.sol/5151111/run-lates
 // The SismoConnectConfig is a configuration needed to connect to Sismo Connect and requests data from your users.
 
 const sismoConnectConfig: SismoConnectConfig = {
-  appId: "0xf4977993e52606cfd67b7a1cde717069",
+  appId: "0xf16f189921c7684c3d6f5b471d5e1178",
   vault: {
     // For development purposes
     // insert any account that you want to impersonate  here
     // Never use this in production
-    impersonate: ["dhadrien.sismo.eth", "twitter:dhadrien_", "github:dhadrien"],
+    impersonate: [
+      "0x6d8e3ef015c628Aa91a7fAC6a348bea80BcC0940", 
+      "0x072d7e87c13bCe2751B5766A0E2280BAD235974f",
+      "0xc2564e41B7F5Cb66d2d99466450CfebcE9e8228f"
+    ],
   },
 };
 
@@ -76,9 +81,9 @@ export default function Home() {
     responseBytes && chain
       ? {
           address: transactions[0].contractAddress as `0x${string}}`,
-          abi: [...AirdropABI, ...errorsABI],
-          functionName: "claimWithSismo",
-          args: [responseBytes],
+          abi: [...ExpirableERC721ABI, ...errorsABI],
+          functionName: "mint",
+          args: [address, responseBytes],
           chain,
         }
       : {};
@@ -109,16 +114,17 @@ export default function Home() {
       const tx = await writeAsync?.();
       const txReceipt = tx && (await waitForTransaction({ hash: tx.hash }));
       if (txReceipt?.status === "success") {
-        const mintEvent = decodeEventLog({
-          abi: AirdropABI,
-          data: txReceipt.logs[0]?.data,
-          topics: txReceipt.logs[0]?.topics,
-        });
-        const args = mintEvent?.args as {
-          value: string;
-        };
-        const ethAmount = formatEther(BigInt(args.value));
-        setAmountClaimed(ethAmount);
+        // const mintEvent = decodeEventLog({
+        //   abi: ExpirableERC721ABI,
+        //   data: txReceipt.logs[0]?.data,
+        //   topics: txReceipt.logs[0]?.topics,
+        // });
+        // const args = mintEvent?.args as {
+        //   value: string;
+        // };
+        // const ethAmount = formatEther(BigInt(args.value));
+        // setAmountClaimed(ethAmount);
+        console.log("success");
       }
     } catch (e: any) {
       setError(formatError(e));
@@ -185,6 +191,7 @@ export default function Home() {
               // the auth request we want to make
               // here we want the proof of a Sismo Vault ownership from our users
               auths={[{ authType: AuthType.VAULT }]}
+              claim={{groupId: "0xd630aa769278cacde879c5c0fe5d203c", isSelectableByUser: true, claimType: ClaimType.GTE, value: 1}}
               // we ask the user to sign a message
               // it will be used onchain to prevent frontrunning
               signature={{ message: signMessage(address) }}
