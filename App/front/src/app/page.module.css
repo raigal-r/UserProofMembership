@@ -1,9 +1,9 @@
 .main {
-  margin: 30vh auto 0 auto;
+  /* margin: 30vh auto 0 auto; */
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 750px;
+  /* width: 750px; */
 }
 
 .disconnect{

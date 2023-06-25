@@ -5,7 +5,7 @@ import { WagmiProvider } from "@/utils/wagmi";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Sismo Connect - Onchain Tutorial",
+  title: "Sismo Connect",
   description: "A simple ERC20 gated airdrop example using Sismo Connect",
 };
 

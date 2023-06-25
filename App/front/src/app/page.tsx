@@ -38,6 +38,28 @@ import {
 } from "@sismo-core/sismo-connect-react";
 import { transactions } from "../../../broadcast/ExpirableERC721.s.sol/5151111/run-latest.json";
 
+import {
+  ChakraProvider,
+  Box,
+  Text,
+  Link,
+  VStack,
+  Code,
+  Grid,
+  theme,
+  Container,
+  Heading,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Stack,
+} from '@chakra-ui/react';
+
+import Image from "next/image";
+import logo from "../../assets/logo.png";
+
+
 /* ***********************  Sismo Connect Config *************************** */
 
 // you can create a new Sismo Connect app at https://factory.sismo.io
@@ -146,98 +168,125 @@ export default function Home() {
 
   return (
     <>
-      <main className={styles.main}>
-        <h1>
-          <b> Tutorial</b>
-          <br />
-          Sismo Connect onchain
-        </h1>
 
-        {!isConnected && (
-          <>
-            <p>This is a simple ERC20 gated airdrop example using Sismo Connect.</p>
-            {connectors.map((connector) => (
-              <button
-                disabled={!connector.ready || isLoading}
-                key={connector.id}
-                onClick={() => connect({ connector })}
-              >
-                {isLoading && pendingConnector?.id === connector.id
-                  ? "Connecting..."
-                  : "Connect wallet"}
-              </button>
-            ))}
-          </>
-        )}
+    <ChakraProvider theme={theme}>
 
-        {isConnected && !responseBytes && (
-          <>
-            <p>Using Sismo Connect we will protect our airdrop from:</p>
-            <br />
-            <ul>
-              <li>Double-spending: each user has a unique Vault id derived from your app id.</li>
-              <li>Front-running: the airdrop destination address is sent as signature request</li>
-            </ul>
-            <br />
-            <p>
-              <b>Chain: {chain?.name}</b>
-              <br />
-              <b>Your airdrop destination address is: {address}</b>
-            </p>
+    <Box as="section"  bgGradient='linear(to-r, #363390, #00204C, #093E6F)' color="white" py={{ base: '16', md: '24' }}>
+        <Container>
+        <Grid minH="100vh" p={3}>
+        <Stack align="center">
+            <Stack spacing={{ base: '4', md: '6' }}  align="center" textAlign="center">
+              <Stack spacing="3">
 
-            <SismoConnectButton
-              // the client config created
-              config={sismoConnectConfig}
-              // the auth request we want to make
-              // here we want the proof of a Sismo Vault ownership from our users
-              auths={[{ authType: AuthType.VAULT }]}
-              claim={{groupId: "0xd630aa769278cacde879c5c0fe5d203c", isSelectableByUser: true, claimType: ClaimType.GTE, value: 1}}
-              // we ask the user to sign a message
-              // it will be used onchain to prevent frontrunning
-              signature={{ message: signMessage(address) }}
-              // onResponseBytes calls a 'setResponse' function with the responseBytes returned by the Sismo Vault
-              onResponseBytes={(responseBytes: string) => {
-                setResponseBytes(responseBytes);
-              }}
-              // Some text to display on the button
-              text={"Claim with Sismo"}
-            />
-          </>
-        )}
+                <main className={styles.main}>
 
-        {isConnected && responseBytes && !amountClaimed && (
-          <>
-            <p>Chain: {chain?.name}</p>
-            <p>Your airdrop destination address is: {address}</p>
-            <button disabled={loading || Boolean(error)} onClick={() => claimAirdrop()}>
-              {!loading ? "Claim" : "Claiming..."}
-            </button>
-          </>
-        )}
+                <Image src={logo} alt="Sismo Connect" />
 
-        {isConnected && responseBytes && amountClaimed && (
-          <>
-            <p>Congratulations!</p>
-            <p>
-              You have claimed {amountClaimed} tokens on {address}.
-            </p>
-          </>
-        )}
-        {isConnected && !amountClaimed && error && (
-          <>
-            <p className={styles.error}>{error}</p>
-            {error.slice(0, 16) === "Please switch to" && (
-              <button onClick={() => switchNetwork?.(CHAIN.id)}>Switch chain</button>
-            )}
-          </>
-        )}
-      </main>
+                <Heading color="white">User Proof Membership</Heading>
+                <Text size={{ base: 'md', md: 'lg' }} fontWeight="semibold" color="white">
+                We build software that empowers organizations to effectively integrate their data, decisions, and operations.
+                </Text>
+                <Text size={{ base: 'md', md: 'lg' }} fontWeight="semibold" color="white">
+                Software that empowers organizations to effectively integrate their data, decisions, and operations.
+                </Text>
 
-      {isConnected && (
-        <button className={styles.disconnect} onClick={() => resetApp()}>
-          Reset
-        </button>
-      )}
+                {!isConnected && (
+                  <>
+                    {/* <p>This is a simple ERC20 gated airdrop example using Sismo Connect.</p> */}
+                    {connectors.map((connector) => (
+                      <button
+                        disabled={!connector.ready || isLoading}
+                        key={connector.id}
+                        onClick={() => connect({ connector })}
+                      >
+                        {isLoading && pendingConnector?.id === connector.id
+                          ? "Connecting..."
+                          : "Connect wallet"}
+                      </button>
+                    ))}
+                  </>
+                )}
+
+                {isConnected && !responseBytes && (
+                  <>
+                    {/* <p>Using Sismo Connect we will protect our airdrop from:</p>
+                    <br />
+                    <ul>
+                      <li>Double-spending: each user has a unique Vault id derived from your app id.</li>
+                      <li>Front-running: the airdrop destination address is sent as signature request</li>
+                    </ul> */}
+                    <br />
+                    <p>
+                      <b>Chain: {chain?.name}</b>
+                      <br />
+                      <b>Your airdrop destination address is: {address}</b>
+                    </p>
+
+                    <SismoConnectButton
+                      // the client config created
+                      config={sismoConnectConfig}
+                      // the auth request we want to make
+                      // here we want the proof of a Sismo Vault ownership from our users
+                      auths={[{ authType: AuthType.VAULT }]}
+                      claim={{groupId: "0xd630aa769278cacde879c5c0fe5d203c", isSelectableByUser: true, claimType: ClaimType.GTE, value: 1}}
+                      // we ask the user to sign a message
+                      // it will be used onchain to prevent frontrunning
+                      signature={{ message: signMessage(address) }}
+                      // onResponseBytes calls a 'setResponse' function with the responseBytes returned by the Sismo Vault
+                      onResponseBytes={(responseBytes: string) => {
+                        setResponseBytes(responseBytes);
+                      }}
+                      // Some text to display on the button
+                      text={"Claim with Sismo"}
+                    />
+                  </>
+                )}
+
+                {isConnected && responseBytes && !amountClaimed && (
+                  <>
+                    <p>Chain: {chain?.name}</p>
+                    <p>Your airdrop destination address is: {address}</p>
+                    <button disabled={loading || Boolean(error)} onClick={() => claimAirdrop()}>
+                      {!loading ? "Claim" : "Claiming..."}
+                    </button>
+                  </>
+                )}
+
+                {isConnected && responseBytes && amountClaimed && (
+                  <>
+                    <p>Congratulations!</p>
+                    <p>
+                      You have claimed {amountClaimed} tokens on {address}.
+                    </p>
+                  </>
+                )}
+                {isConnected && !amountClaimed && error && (
+                  <>
+                    <p className={styles.error}>{error}</p>
+                    {error.slice(0, 16) === "Please switch to" && (
+                      <button onClick={() => switchNetwork?.(CHAIN.id)}>Switch chain</button>
+                    )}
+                  </>
+                )}
+                
+              </main>
+
+              {isConnected && (
+                <button className={styles.disconnect} onClick={() => resetApp()}>
+                  Reset
+                </button>
+              )}
+
+
+              </Stack>
+            </Stack>
+          </Stack>
+        </Grid>
+        </Container>
+      </Box>
+
+    </ChakraProvider>
+
     </>
   );
 }
