@@ -19,7 +19,6 @@ contract SimpleERC6551Account is IERC165, IERC1271, IERC6551Account {
 
     receive() external payable {}
 
-
     function executeCall(
         address to,
         uint256 value,
