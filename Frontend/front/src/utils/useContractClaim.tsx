@@ -30,7 +30,7 @@ export default function useContractClaim(
     responseBytes && ethAddress && chain?.id === CHAIN.id
       ? {
           address: contractAddress,
-          abi: [..ExpirableERC721ABI],
+          abi: ExpirableERC721ABI,
           functionName: "mint",
           args: [ethAddress, responseBytes],
           chainId: CHAIN.id,
@@ -78,7 +78,7 @@ export default function useContractClaim(
 
       if (txReceipt && txReceipt?.status === "success") {
         const mintEvent = decodeEventLog({
-          abi: AirdropABI,
+          abi: ExpirableERC721ABI,
           data: txReceipt.logs[0]?.data,
           topics: txReceipt.logs[0]?.topics,
         });
