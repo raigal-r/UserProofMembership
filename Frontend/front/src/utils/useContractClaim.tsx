@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Chain, TransactionReceipt, decodeEventLog, formatEther } from "viem";
 import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { waitForTransaction } from "@wagmi/core";
-import { abi as AirdropABI } from "../../../abi/Airdrop.json";
+import { abi as ExpirableERC721ABI} from "../../../out/ExpirableERC721.sol/ExpirableERC721.json";
 import { errorsABI } from "./errorsABI";
 import { CHAIN } from "@/app/page";
 import { formatError } from "./misc";
@@ -17,7 +17,7 @@ export type ContractClaim = {
 
 export default function useContractClaim(
   responseBytes: string | null,
-  ethAddress: `0x${string}` | null | undefined,
+  ethAddress: `0x${string}` | null | undefined, // needs to be TBA address
   chain: Chain | null | undefined,
   contractAddress: `0x${string}`,
 ): ContractClaim {
@@ -30,8 +30,8 @@ export default function useContractClaim(
     responseBytes && ethAddress && chain?.id === CHAIN.id
       ? {
           address: contractAddress,
-          abi: [...AirdropABI, ...errorsABI],
-          functionName: "claimWithSismo",
+          abi: [..ExpirableERC721ABI],
+          functionName: "mint",
           args: [ethAddress, responseBytes],
           chainId: CHAIN.id,
         }
