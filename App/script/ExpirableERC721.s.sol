@@ -7,14 +7,12 @@ import "../src/ExpirableERC721.sol";
 contract ExpirableERC721DeployScript is Script {
     ExpirableERC721 erc721;
 
-    bytes16 public constant GROUP_ID = 0x349d8bd135bd903a633464f9b303c902;
+    bytes16 public constant GROUP_ID = 0xa4ff29395199edcc63221e5b9b5c202d;
 
-    function run_test(
-        string memory _symbol,
-        string memory _ticker,
-        bytes16 _groupID,
-        bool _useSismo
-    ) external returns (ExpirableERC721) {
+    function run_test(string memory _symbol, string memory _ticker, bytes16 _groupID, bool _useSismo)
+        external
+        returns (ExpirableERC721)
+    {
         if (block.chainid == 5) {
             uint256 deployerKey = vm.envUint("PRIVATE_KEY");
             vm.startBroadcast(deployerKey);
